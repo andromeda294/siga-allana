@@ -1388,6 +1388,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@expo/vector-icons@npm:^15.0.2":
+  version: 15.1.1
+  resolution: "@expo/vector-icons@npm:15.1.1"
+  peerDependencies:
+    expo-font: ">=14.0.4"
+    react: "*"
+    react-native: "*"
+  checksum: 10c0/fdd50c90484934204b90d345904fa69ca788a5de704d62b3cb580c52aa4cf4bffe1c05c509d043cf2b6842f1bdad6b78585524f3c6ae5f77e36385d83c0aa577
+  languageName: node
+  linkType: hard
+
 "@expo/ws-tunnel@npm:^2.0.1":
   version: 2.0.1
   resolution: "@expo/ws-tunnel@npm:2.0.1"
@@ -1819,6 +1830,17 @@ __metadata:
     "@types/react":
       optional: true
   checksum: 10c0/427df10bb3c55de36afd6b9a749fb4b72b0f78840ae4abb5dda24aa09d653ede2d264c96a8030f58db353498f42b2bce929510c777004e250f7845b06c782bcf
+  languageName: node
+  linkType: hard
+
+"@react-native-async-storage/async-storage@npm:2.2.0":
+  version: 2.2.0
+  resolution: "@react-native-async-storage/async-storage@npm:2.2.0"
+  dependencies:
+    merge-options: "npm:^3.0.4"
+  peerDependencies:
+    react-native: ^0.0.0-0 || >=0.65 <1.0
+  checksum: 10c0/84900eba46a40225c4ac9bf5eb58885200dc1e789d873ecda46a2a213870cc7110536ed1fd7a74b873071f3603c093958fbd84c635d6f6d4f94bfbb616ffa0ef
   languageName: node
   linkType: hard
 
@@ -2837,6 +2859,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"expo-app-metrics@npm:~58.0.15":
+  version: 58.0.15
+  resolution: "expo-app-metrics@npm:58.0.15"
+  dependencies:
+    expo-updates-interface: "npm:~58.0.1"
+  peerDependencies:
+    expo: "*"
+    react: "*"
+    react-native: "*"
+  checksum: 10c0/6b920011b680b75d6c1d504404ec2e0d5f4b15ae615cc835ee3efd00c2dc2593013db22c196d6f7dd858d0bcd78b2b631d81547411baa40a9410ccb8b5839bbd
+  languageName: node
+  linkType: hard
+
 "expo-asset@npm:~58.0.21":
   version: 58.0.21
   resolution: "expo-asset@npm:58.0.21"
@@ -2872,6 +2907,13 @@ __metadata:
   peerDependencies:
     expo: "*"
   checksum: 10c0/387e9ea5624202e86f57232452f691509ff357069452a4ba59f9d54e153ec1510455f1118221b77c41b99165b45e2b669f0c75e9322702c12a1599341f2cf3a6
+  languageName: node
+  linkType: hard
+
+"expo-eas-client@npm:~58.0.2":
+  version: 58.0.2
+  resolution: "expo-eas-client@npm:58.0.2"
+  checksum: 10c0/df5d8d6264f120ed328b9fdb470fc594d658cf74802d24b5854257b20a42e58eb19712dc11e3c42a8b5c87689b24716db52834c82a11ec61cb97e205b3081d9d
   languageName: node
   linkType: hard
 
@@ -3023,6 +3065,30 @@ __metadata:
   languageName: node
   linkType: hard
 
+"expo-observe@npm:~58.0.19":
+  version: 58.0.19
+  resolution: "expo-observe@npm:58.0.19"
+  dependencies:
+    expo-app-metrics: "npm:~58.0.15"
+    expo-eas-client: "npm:~58.0.2"
+  peerDependencies:
+    "@react-navigation/native": ^7.0.0
+    expo: "*"
+    expo-router: "*"
+    react: "*"
+    react-native: "*"
+    react-native-reanimated: ">=4.7.0"
+  peerDependenciesMeta:
+    "@react-navigation/native":
+      optional: true
+    expo-router:
+      optional: true
+    react-native-reanimated:
+      optional: true
+  checksum: 10c0/039af0c067d27dcd0aef98842571c438f66fc8bfa7759121f82ae31d974f11bc9ac0b7e8c3f8524ddc66c2d61ad62625328efddab7faa0f52cfc9921aeb90ff5
+  languageName: node
+  linkType: hard
+
 "expo-router@npm:~58.0.31":
   version: 58.0.31
   resolution: "expo-router@npm:58.0.31"
@@ -3148,6 +3214,15 @@ __metadata:
     react-native-web:
       optional: true
   checksum: 10c0/d09de8e33c5c7324199316edf486de9fede527281e28f82435cf288a3b8252deeea9b5b79c563d155791b87b644c3715279444bd605b6f385863e344ac7e003e
+  languageName: node
+  linkType: hard
+
+"expo-updates-interface@npm:~58.0.1":
+  version: 58.0.1
+  resolution: "expo-updates-interface@npm:58.0.1"
+  peerDependencies:
+    expo: "*"
+  checksum: 10c0/22ba7c8ade140021225966107ff543eddfabc5cc3d506f193e4da313009c72754ab2b0da7ca6ba2acc0485774bbec95f00f4f97b46c642870a735aafbc78f9bb
   languageName: node
   linkType: hard
 
@@ -3554,6 +3629,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"is-plain-obj@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "is-plain-obj@npm:2.1.0"
+  checksum: 10c0/e5c9814cdaa627a9ad0a0964ded0e0491bfd9ace405c49a5d63c88b30a162f1512c069d5b80997893c4d0181eadc3fed02b4ab4b81059aba5620bfcdfdeb9c53
+  languageName: node
+  linkType: hard
+
 "is-wsl@npm:^2.2.0":
   version: 2.2.0
   resolution: "is-wsl@npm:2.2.0"
@@ -3880,6 +3962,15 @@ __metadata:
   version: 6.0.0
   resolution: "memoize-one@npm:6.0.0"
   checksum: 10c0/45c88e064fd715166619af72e8cf8a7a17224d6edf61f7a8633d740ed8c8c0558a4373876c9b8ffc5518c2b65a960266adf403cc215cb1e90f7e262b58991f54
+  languageName: node
+  linkType: hard
+
+"merge-options@npm:^3.0.4":
+  version: 3.0.4
+  resolution: "merge-options@npm:3.0.4"
+  dependencies:
+    is-plain-obj: "npm:^2.1.0"
+  checksum: 10c0/02b5891ceef09b0b497b5a0154c37a71784e68ed71b14748f6fd4258ffd3fe4ecd5cb0fd6f7cae3954fd11e7686c5cb64486daffa63c2793bbe8b614b61c7055
   languageName: node
   linkType: hard
 
@@ -5272,6 +5363,8 @@ __metadata:
   resolution: "siga-allana@workspace:."
   dependencies:
     "@expo/ui": "npm:~58.0.28"
+    "@expo/vector-icons": "npm:^15.0.2"
+    "@react-native-async-storage/async-storage": "npm:2.2.0"
     "@types/react": "npm:~19.3.0"
     expo: "npm:~58.0.25"
     expo-constants: "npm:~58.0.16"
@@ -5280,6 +5373,7 @@ __metadata:
     expo-glass-effect: "npm:~58.0.5"
     expo-image: "npm:~58.0.18"
     expo-linking: "npm:~58.0.17"
+    expo-observe: "npm:~58.0.19"
     expo-router: "npm:~58.0.31"
     expo-splash-screen: "npm:~58.0.14"
     expo-status-bar: "npm:~58.0.5"
