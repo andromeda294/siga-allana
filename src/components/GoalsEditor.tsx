@@ -1,5 +1,6 @@
 import { DailyGoals } from "@/contexts/MealsContext";
-import { colors, globalStyles } from "@/styles/global";
+import { useThemeStyles } from "@/styles/useThemeStyles";
+import { useAppSettings } from "@/contexts/AppSettingsContext";
 import { useEffect, useState } from "react";
 import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 
@@ -31,6 +32,7 @@ function toForm(goals: DailyGoals): GoalForm {
 }
 
 export default function GoalsEditor({ visible, goals, onClose, onSave }: GoalsEditorProps) {
+    const styles = useThemeStyles(createStyles);
     const [form, setForm] = useState(() => toForm(goals));
     const [error, setError] = useState("");
 
@@ -92,7 +94,11 @@ export default function GoalsEditor({ visible, goals, onClose, onSave }: GoalsEd
     );
 }
 
-const styles = StyleSheet.create({
+function createStyles(
+    colors: ReturnType<typeof useAppSettings>["colors"],
+    globalStyles: ReturnType<typeof useAppSettings>["globalStyles"],
+) {
+    return StyleSheet.create({
     card: {
         ...globalStyles.card,
         marginBottom: 20,
@@ -180,4 +186,5 @@ const styles = StyleSheet.create({
         fontSize: 13,
         fontWeight: "800",
     },
-});
+    });
+}

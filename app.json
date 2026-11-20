@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "SIGA ALLANA",
+    "name": "Ritmo",
     "slug": "siga-allana",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "sigaallana",
@@ -27,11 +27,21 @@
     "plugins": [
       "expo-router",
       [
+        "expo-notifications",
+        {
+          "enableRemoteNotifications": false
+        }
+      ],
+      [
         "expo-splash-screen",
         {
-          "backgroundColor": "#F4F8F4",
-          "image": "./assets/images/splash-icon.png",
-          "imageWidth": 320
+          "backgroundColor": "#F4F7F2",
+          "image": "./assets/images/icon.png",
+          "imageWidth": 128,
+          "dark": {
+            "backgroundColor": "#111A15",
+            "image": "./assets/images/icon.png"
+          }
         }
       ]
     ],

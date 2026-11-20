@@ -122,7 +122,7 @@ function parseStoredData(raw: string): StoredData {
         !Array.isArray(value.waterEntries) ||
         !value.waterEntries.every(isWaterEntry)
     ) {
-        throw new Error("The saved SIGA Allana data has an unsupported format.");
+        throw new Error("The saved Ritmo data has an unsupported format.");
     }
 
     return {
@@ -166,7 +166,7 @@ export function MealsProvider({ children }: PropsWithChildren) {
                     }
                 }
             } catch (error) {
-                console.error("Could not load local SIGA Allana data.", error);
+                console.error("Could not load local Ritmo data.", error);
                 if (isMounted) {
                     setLoadError("Não foi possível carregar os dados guardados neste dispositivo.");
                 }
@@ -190,7 +190,7 @@ export function MealsProvider({ children }: PropsWithChildren) {
             .then(() => AsyncStorage.setItem(STORAGE_KEY, serialized))
             .then(() => setSaveError(null))
             .catch((error: unknown) => {
-                console.error("Could not save local SIGA Allana data.", error);
+                console.error("Could not save local Ritmo data.", error);
                 setSaveError("Não foi possível guardar os dados neste dispositivo.");
             });
     }, [goals, isHydrated, loadError, meals, waterEntries]);

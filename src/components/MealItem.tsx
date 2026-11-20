@@ -1,4 +1,5 @@
-import { colors } from "@/styles/global";
+import { useAppSettings } from "@/contexts/AppSettingsContext";
+import { useThemeStyles } from "@/styles/useThemeStyles";
 import type { MealRecord } from "@/contexts/MealsContext";
 import { Ionicons } from "@expo/vector-icons";
 import { Link } from "expo-router";
@@ -12,6 +13,8 @@ type MealItemProps = {
 };
 
 export default function MealItem({ meal, onRemove, onEdit, showDate = false }: MealItemProps) {
+    const { colors } = useAppSettings();
+    const styles = useThemeStyles(createStyles);
     const time = new Date(meal.createdAt).toLocaleString("pt-PT", showDate
         ? { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" }
         : { hour: "2-digit", minute: "2-digit" });
@@ -64,13 +67,15 @@ export default function MealItem({ meal, onRemove, onEdit, showDate = false }: M
     );
 }
 
-const styles = StyleSheet.create({
+function createStyles(
+    colors: ReturnType<typeof useAppSettings>["colors"],
+    globalStyles: ReturnType<typeof useAppSettings>["globalStyles"],
+) {
+    return StyleSheet.create({
     card: {
+        ...globalStyles.card,
         alignItems: "center",
-        backgroundColor: colors.surface,
-        borderColor: colors.border,
         borderRadius: 16,
-        borderWidth: 1,
         flexDirection: "row",
         gap: 12,
         marginBottom: 10,
@@ -119,4 +124,5 @@ const styles = StyleSheet.create({
         minHeight: 36,
         minWidth: 28,
     },
-});
+    });
+}

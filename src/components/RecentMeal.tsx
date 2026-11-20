@@ -1,10 +1,13 @@
 import { useMeals } from "@/contexts/MealsContext";
-import { colors, globalStyles } from "@/styles/global";
+import { useAppSettings } from "@/contexts/AppSettingsContext";
+import { useThemeStyles } from "@/styles/useThemeStyles";
 import { Link } from "expo-router";
 import { StyleSheet, Text, View } from "react-native";
 import MealItem from "./MealItem";
 
 export default function RecentMeals() {
+    const { globalStyles } = useAppSettings();
+    const styles = useThemeStyles(createStyles);
     const { todayMeals } = useMeals();
     const recentMeals = todayMeals.slice(0, 3);
 
@@ -27,7 +30,11 @@ export default function RecentMeals() {
     );
 }
 
-const styles = StyleSheet.create({
+function createStyles(
+    colors: ReturnType<typeof useAppSettings>["colors"],
+    globalStyles: ReturnType<typeof useAppSettings>["globalStyles"],
+) {
+    return StyleSheet.create({
     section: {
         marginTop: 30,
     },
@@ -63,4 +70,5 @@ const styles = StyleSheet.create({
         fontWeight: "700",
         marginTop: 15,
     },
-});
+    });
+}

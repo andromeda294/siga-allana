@@ -1,9 +1,12 @@
-import { colors, globalStyles } from "@/styles/global";
+import { useAppSettings } from "@/contexts/AppSettingsContext";
+import { useThemeStyles } from "@/styles/useThemeStyles";
 import { Image } from "expo-image";
 import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function ScreenLoader() {
+    const { colors, globalStyles } = useAppSettings();
+    const styles = useThemeStyles(createStyles);
     return (
         <SafeAreaView style={globalStyles.screen}>
             <View style={styles.content}>
@@ -11,9 +14,9 @@ export default function ScreenLoader() {
                     source={require("../../assets/images/icon.png")}
                     style={styles.logo}
                     contentFit="cover"
-                    accessibilityLabel="SIGA ALLANA"
+                    accessibilityLabel="Ritmo"
                 />
-                <Text style={styles.brand}>SIGA ALLANA</Text>
+                <Text style={styles.brand}>RITMO</Text>
                 <Text style={styles.tagline}>NUTRIÇÃO · BEM-ESTAR</Text>
                 <ActivityIndicator color={colors.primary} size="large" />
                 <Text style={styles.label}>A preparar a tua experiência...</Text>
@@ -22,7 +25,11 @@ export default function ScreenLoader() {
     );
 }
 
-const styles = StyleSheet.create({
+function createStyles(
+    colors: ReturnType<typeof useAppSettings>["colors"],
+    globalStyles: ReturnType<typeof useAppSettings>["globalStyles"],
+) {
+    return StyleSheet.create({
     content: {
         alignItems: "center",
         flex: 1,
@@ -52,4 +59,5 @@ const styles = StyleSheet.create({
         color: colors.textSecondary,
         fontSize: 13,
     },
-});
+    });
+}

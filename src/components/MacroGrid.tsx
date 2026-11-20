@@ -1,9 +1,12 @@
 import { useMeals } from "@/contexts/MealsContext";
-import { colors } from "@/styles/global";
+import { useAppSettings } from "@/contexts/AppSettingsContext";
+import { useThemeStyles } from "@/styles/useThemeStyles";
 import MacroCard from "./MacroCard";
 import { StyleSheet, Text, View } from "react-native";
 
 export default function MacroGrid() {
+    const { colors } = useAppSettings();
+    const styles = useThemeStyles(createStyles);
     const { todayTotals, goals } = useMeals();
     const calorieProgress = Math.min(todayTotals.calories / goals.calories, 1) * 100;
     const remainingCalories = Math.max(goals.calories - Math.round(todayTotals.calories), 0);
@@ -13,7 +16,7 @@ export default function MacroGrid() {
             <View style={styles.calorieCard}>
                 <View style={styles.calorieHeader}>
                     <View>
-                        <Text style={styles.calorieLabel}>CALORIAS CONSUMIDAS</Text>
+                        <Text style={styles.calorieLabel}>CALORIAS HOJE</Text>
                         <View style={styles.calorieAmountRow}>
                             <Text style={styles.calorieValue}>
                                 {Math.round(todayTotals.calories).toLocaleString("pt-PT")}
@@ -35,15 +38,19 @@ export default function MacroGrid() {
                 </Text>
             </View>
             <View style={styles.grid}>
-                <MacroCard label="Proteína" value={todayTotals.protein} goal={goals.protein} unit="g" color="#16734d" />
-                <MacroCard label="Hidratos" value={todayTotals.carbs} goal={goals.carbs} unit="g" color="#4574c4" />
-                <MacroCard label="Gordura" value={todayTotals.fat} goal={goals.fat} unit="g" color="#c47832" />
+                <MacroCard label="Proteína" value={todayTotals.protein} goal={goals.protein} unit="g" color={colors.protein} />
+                <MacroCard label="Hidratos" value={todayTotals.carbs} goal={goals.carbs} unit="g" color={colors.carbs} />
+                <MacroCard label="Gordura" value={todayTotals.fat} goal={goals.fat} unit="g" color={colors.fat} />
             </View>
         </View>
     );
 }
 
-const styles = StyleSheet.create({
+function createStyles(
+    colors: ReturnType<typeof useAppSettings>["colors"],
+    globalStyles: ReturnType<typeof useAppSettings>["globalStyles"],
+) {
+    return StyleSheet.create({
     grid: {
         flexDirection: "row",
         flexWrap: "wrap",
@@ -51,9 +58,9 @@ const styles = StyleSheet.create({
         marginTop: 12,
     },
     calorieCard: {
-        backgroundColor: colors.primary,
-        borderRadius: 22,
-        padding: 20,
+        ...globalStyles.card,
+        borderRadius: 24,
+        padding: 22,
     },
     calorieHeader: {
         alignItems: "center",
@@ -61,10 +68,10 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
     },
     calorieLabel: {
-        color: "#d7f0e2",
+        color: colors.textSecondary,
         fontSize: 11,
         fontWeight: "700",
-        letterSpacing: 1.1,
+        letterSpacing: 1,
     },
     calorieAmountRow: {
         alignItems: "baseline",
@@ -73,25 +80,25 @@ const styles = StyleSheet.create({
         marginTop: 10,
     },
     calorieValue: {
-        color: "#ffffff",
-        fontSize: 38,
+        color: colors.text,
+        fontSize: 42,
         fontWeight: "800",
-        letterSpacing: -1,
+        letterSpacing: -1.5,
     },
     calorieUnit: {
-        color: "#e1f3e8",
+        color: colors.textSecondary,
         fontSize: 14,
         fontWeight: "600",
     },
     calorieGoal: {
-        color: "#d7f0e2",
+        color: colors.textSecondary,
         fontSize: 12,
         marginTop: 2,
     },
     progressBadge: {
         alignItems: "center",
-        backgroundColor: "rgba(255,255,255,0.14)",
-        borderColor: "rgba(255,255,255,0.24)",
+        backgroundColor: colors.surfaceRaised,
+        borderColor: colors.border,
         borderRadius: 38,
         borderWidth: 1,
         height: 74,
@@ -99,31 +106,32 @@ const styles = StyleSheet.create({
         width: 74,
     },
     progressValue: {
-        color: "#ffffff",
+        color: colors.primary,
         fontSize: 18,
         fontWeight: "800",
     },
     progressLabel: {
-        color: "#d7f0e2",
+        color: colors.textSecondary,
         fontSize: 9,
         marginTop: 1,
     },
     track: {
-        backgroundColor: "rgba(255,255,255,0.2)",
+        backgroundColor: colors.surfaceRaised,
         borderRadius: 5,
         height: 7,
         marginTop: 18,
         overflow: "hidden",
     },
     progress: {
-        backgroundColor: "#ffffff",
+        backgroundColor: colors.primary,
         borderRadius: 5,
         height: "100%",
     },
     remaining: {
-        color: "#e1f3e8",
+        color: colors.textSecondary,
         fontSize: 11,
         fontWeight: "600",
         marginTop: 8,
     },
-});
+    });
+}

@@ -2,7 +2,8 @@ import ScreenLoader from "@/components/ScreenLoader";
 import StorageNotice from "@/components/StorageNotice";
 import { useMeals } from "@/contexts/MealsContext";
 import type { MealInput } from "@/contexts/MealsContext";
-import { colors, globalStyles } from "@/styles/global";
+import { useAppSettings } from "@/contexts/AppSettingsContext";
+import { useThemeStyles } from "@/styles/useThemeStyles";
 import { Ionicons } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
 import {
@@ -47,6 +48,8 @@ function parseAmount(value: string) {
 }
 
 export default function AddMealScreen() {
+    const { colors, globalStyles, settingsError } = useAppSettings();
+    const styles = useThemeStyles(createStyles);
     const {
         addMeal,
         clearMealForEditing,
@@ -162,6 +165,7 @@ export default function AddMealScreen() {
                         </Text>
                     </View>
 
+                    <StorageNotice message={settingsError} />
                     <StorageNotice message={storageError} />
                     <View style={styles.formCard}>
                         <Text style={styles.label}>Nome da refeição</Text>
@@ -215,24 +219,24 @@ export default function AddMealScreen() {
                             onPress={handleSubmit}
                             style={({ pressed }) => [styles.submitButton, pressed && styles.submitPressed]}
                         >
-                            <Ionicons name="add" size={20} color={colors.background} />
+                            <Ionicons name="add" size={20} color={colors.onPrimary} />
                             <Text style={styles.submitText}>
                                 {editingMeal ? "Guardar alterações" : "Adicionar refeição"}
                             </Text>
                         </Pressable>
                     </View>
 
-                    <View style={styles.note}>
-                        <Ionicons name="information-circle-outline" size={18} color={colors.textSecondary} />
-                        <Text style={styles.noteText}>Os registos são guardados localmente neste dispositivo.</Text>
-                    </View>
                 </ScrollView>
             </KeyboardAvoidingView>
         </SafeAreaView>
     );
 }
 
-const styles = StyleSheet.create({
+function createStyles(
+    colors: ReturnType<typeof useAppSettings>["colors"],
+    globalStyles: ReturnType<typeof useAppSettings>["globalStyles"],
+) {
+    return StyleSheet.create({
     keyboardView: {
         flex: 1,
     },
@@ -357,17 +361,5 @@ const styles = StyleSheet.create({
         fontSize: 15,
         fontWeight: "800",
     },
-    note: {
-        alignItems: "flex-start",
-        flexDirection: "row",
-        gap: 8,
-        marginTop: 20,
-        paddingHorizontal: 4,
-    },
-    noteText: {
-        color: colors.textSecondary,
-        flex: 1,
-        fontSize: 12,
-        lineHeight: 18,
-    },
-});
+    });
+}

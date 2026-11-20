@@ -1,4 +1,5 @@
-import { colors } from "@/styles/global";
+import { useThemeStyles } from "@/styles/useThemeStyles";
+import { useAppSettings } from "@/contexts/AppSettingsContext";
 import { StyleSheet, Text, View } from "react-native";
 
 type StorageNoticeProps = {
@@ -6,6 +7,7 @@ type StorageNoticeProps = {
 };
 
 export default function StorageNotice({ message }: StorageNoticeProps) {
+    const styles = useThemeStyles(createStyles);
     if (!message) return null;
 
     return (
@@ -15,9 +17,10 @@ export default function StorageNotice({ message }: StorageNoticeProps) {
     );
 }
 
-const styles = StyleSheet.create({
+function createStyles(colors: ReturnType<typeof useAppSettings>["colors"]) {
+    return StyleSheet.create({
     notice: {
-        backgroundColor: "#fff1f0",
+        backgroundColor: colors.surfaceRaised,
         borderColor: colors.danger,
         borderRadius: 12,
         borderWidth: 1,
@@ -29,4 +32,5 @@ const styles = StyleSheet.create({
         fontSize: 12,
         lineHeight: 18,
     },
-});
+    });
+}

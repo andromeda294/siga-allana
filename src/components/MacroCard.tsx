@@ -1,4 +1,5 @@
-import { colors } from "@/styles/global";
+import { useThemeStyles } from "@/styles/useThemeStyles";
+import { useAppSettings } from "@/contexts/AppSettingsContext";
 import { StyleSheet, Text, View } from "react-native";
 
 type MacroCardProps = {
@@ -10,6 +11,7 @@ type MacroCardProps = {
 };
 
 export default function MacroCard({ label, value, goal, unit, color }: MacroCardProps) {
+    const styles = useThemeStyles(createStyles);
     const progress = Math.min(value / goal, 1) * 100;
     const formattedValue = Math.round(value).toLocaleString("pt-PT");
     const formattedGoal = goal.toLocaleString("pt-PT");
@@ -34,12 +36,14 @@ export default function MacroCard({ label, value, goal, unit, color }: MacroCard
     );
 }
 
-const styles = StyleSheet.create({
+function createStyles(
+    colors: ReturnType<typeof useAppSettings>["colors"],
+    globalStyles: ReturnType<typeof useAppSettings>["globalStyles"],
+) {
+    return StyleSheet.create({
     card: {
-        backgroundColor: colors.surface,
-        borderColor: colors.border,
+        ...globalStyles.card,
         borderRadius: 16,
-        borderWidth: 1,
         flexBasis: "30%",
         flexGrow: 1,
         minWidth: 88,
@@ -77,4 +81,5 @@ const styles = StyleSheet.create({
         fontSize: 9,
         marginTop: 7,
     },
-});
+    });
+}

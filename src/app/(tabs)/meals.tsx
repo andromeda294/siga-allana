@@ -3,8 +3,10 @@ import ScreenLoader from "@/components/ScreenLoader";
 import StorageNotice from "@/components/StorageNotice";
 import { useMeals } from "@/contexts/MealsContext";
 import type { MealRecord } from "@/contexts/MealsContext";
-import { colors, globalStyles } from "@/styles/global";
+import { useAppSettings } from "@/contexts/AppSettingsContext";
+import { useThemeStyles } from "@/styles/useThemeStyles";
 import { Ionicons } from "@expo/vector-icons";
+import * as Linking from "expo-linking";
 import { Link } from "expo-router";
 import { useCallback, useMemo, useState } from "react";
 import {
@@ -24,9 +26,12 @@ function normalizeSearch(value: string) {
 }
 
 export default function MealsScreen() {
+    const { colors, globalStyles, settingsError } = useAppSettings();
+    const styles = useThemeStyles(createStyles);
     const {
         meals,
         todayMeals,
+        goals,
         isHydrated,
         storageError,
         removeMeal,
@@ -34,6 +39,7 @@ export default function MealsScreen() {
     } = useMeals();
     const [period, setPeriod] = useState<Period>("today");
     const [search, setSearch] = useState("");
+    const [facebookError, setFacebookError] = useState(false);
 
     const periodMeals = period === "today" ? todayMeals : meals;
     const filteredMeals = useMemo(() => {
@@ -54,6 +60,19 @@ export default function MealsScreen() {
             ),
         [periodMeals],
     );
+    const macroSummaries = [
+        { label: "Proteína", value: totals.protein, goal: goals.protein },
+        { label: "Hidratos", value: totals.carbs, goal: goals.carbs },
+        { label: "Gordura", value: totals.fat, goal: goals.fat },
+    ];
+    const calorieProgress = Math.min(totals.calories / goals.calories, 1);
+    const openFacebook = useCallback(() => {
+        setFacebookError(false);
+        void Linking.openURL("https://www.facebook.com/share/1AGdoMPCth/").catch((error: unknown) => {
+            console.error("Could not open the Facebook profile.", error);
+            setFacebookError(true);
+        });
+    }, []);
     const renderMeal = useCallback(
         ({ item }: { item: MealRecord }) => (
             <MealItem
@@ -70,6 +89,7 @@ export default function MealsScreen() {
 
     const listHeader = (
         <View>
+            <StorageNotice message={settingsError} />
             <StorageNotice message={storageError} />
             <Text style={styles.eyebrow}>O TEU REGISTO</Text>
             <Text style={globalStyles.title}>Refeições</Text>
@@ -80,18 +100,41 @@ export default function MealsScreen() {
             </Text>
 
             <View style={styles.summary}>
-                <Text style={styles.summaryLabel}>{period === "today" ? "Total de hoje" : "Total do histórico"}</Text>
+                <View style={styles.calorieHeading}>
+                    <Text style={styles.summaryLabel}>
+                        {period === "today" ? "Calorias consumidas" : "Calorias no histórico"}
+                    </Text>
+                    {period === "today" ? (
+                        <Text style={styles.goalLabel}>
+                            Meta: {Math.round(goals.calories).toLocaleString("pt-PT")} kcal
+                        </Text>
+                    ) : null}
+                </View>
                 <Text style={styles.calories}>
                     {Math.round(totals.calories).toLocaleString("pt-PT")}
                     <Text style={styles.kcal}> kcal</Text>
                 </Text>
-                <Text style={styles.macroSummary}>
-                    {Math.round(totals.protein)}g proteína
-                    <Text style={styles.separator}>  ·  </Text>
-                    {Math.round(totals.carbs)}g hidratos
-                    <Text style={styles.separator}>  ·  </Text>
-                    {Math.round(totals.fat)}g gordura
-                </Text>
+                {period === "today" ? (
+                    <View
+                        accessibilityLabel={`${Math.round(calorieProgress * 100)}% da meta diária de calorias`}
+                        accessibilityRole="progressbar"
+                        accessibilityValue={{ min: 0, max: 100, now: Math.round(calorieProgress * 100) }}
+                        style={styles.progressTrack}
+                    >
+                        <View style={[styles.progressFill, { width: `${calorieProgress * 100}%` }]} />
+                    </View>
+                ) : null}
+                <View style={styles.macroGrid}>
+                    {macroSummaries.map((macro) => (
+                        <View key={macro.label} style={styles.macroCard}>
+                            <Text style={styles.macroLabel}>{macro.label}</Text>
+                            <Text style={styles.macroValue}>{Math.round(macro.value)} g</Text>
+                            <Text style={styles.macroGoal}>
+                                {period === "today" ? `Meta: ${Math.round(macro.goal)} g` : "No período"}
+                            </Text>
+                        </View>
+                    ))}
+                </View>
             </View>
 
             <View style={styles.filters}>
@@ -160,6 +203,25 @@ export default function MealsScreen() {
         </View>
     );
 
+    const listFooter = (
+        <View style={styles.footer}>
+            <Pressable
+                accessibilityRole="link"
+                onPress={openFacebook}
+                style={({ pressed }) => [styles.facebookButton, pressed && styles.facebookButtonPressed]}
+            >
+                <Ionicons name="logo-facebook" size={19} color={colors.primary} />
+                <Text style={styles.facebookButtonText}>Segue-me no Facebook</Text>
+                <Ionicons name="open-outline" size={16} color={colors.primary} />
+            </Pressable>
+            {facebookError ? (
+                <Text accessibilityRole="alert" style={styles.facebookError}>
+                    Não foi possível abrir o Facebook. Verifica a ligação à internet e tenta novamente.
+                </Text>
+            ) : null}
+        </View>
+    );
+
     return (
         <SafeAreaView edges={["top", "left", "right"]} style={globalStyles.screen}>
             <FlatList
@@ -169,6 +231,7 @@ export default function MealsScreen() {
                 keyExtractor={(meal) => meal.id}
                 keyboardShouldPersistTaps="handled"
                 ListEmptyComponent={emptyList}
+                ListFooterComponent={listFooter}
                 ListHeaderComponent={listHeader}
                 maxToRenderPerBatch={8}
                 renderItem={renderMeal}
@@ -179,10 +242,14 @@ export default function MealsScreen() {
     );
 }
 
-const styles = StyleSheet.create({
+function createStyles(
+    colors: ReturnType<typeof useAppSettings>["colors"],
+    globalStyles: ReturnType<typeof useAppSettings>["globalStyles"],
+) {
+    return StyleSheet.create({
     listContent: {
         flexGrow: 1,
-        paddingBottom: 32,
+        paddingBottom: 124,
         paddingHorizontal: 20,
         paddingTop: 20,
     },
@@ -198,33 +265,75 @@ const styles = StyleSheet.create({
     },
     summary: {
         ...globalStyles.card,
-        marginTop: 22,
-        padding: 18,
+        marginTop: 20,
+        padding: 16,
+    },
+    calorieHeading: {
+        alignItems: "center",
+        flexDirection: "row",
+        justifyContent: "space-between",
     },
     summaryLabel: {
         color: colors.textSecondary,
         fontSize: 13,
         fontWeight: "600",
     },
+    goalLabel: {
+        color: colors.textSecondary,
+        fontSize: 11,
+        fontWeight: "600",
+    },
     calories: {
         color: colors.text,
         fontSize: 30,
         fontWeight: "800",
-        marginTop: 8,
+        marginTop: 6,
     },
     kcal: {
         color: colors.textSecondary,
         fontSize: 14,
         fontWeight: "500",
     },
-    macroSummary: {
+    progressTrack: {
+        backgroundColor: colors.surfaceRaised,
+        borderRadius: 4,
+        height: 7,
+        marginTop: 12,
+        overflow: "hidden",
+    },
+    progressFill: {
+        backgroundColor: colors.primary,
+        borderRadius: 4,
+        height: "100%",
+    },
+    macroGrid: {
+        flexDirection: "row",
+        gap: 8,
+        marginTop: 16,
+    },
+    macroCard: {
+        backgroundColor: colors.background,
+        borderRadius: 12,
+        flex: 1,
+        minWidth: 0,
+        paddingHorizontal: 10,
+        paddingVertical: 11,
+    },
+    macroLabel: {
         color: colors.textSecondary,
-        fontSize: 12,
-        lineHeight: 19,
+        fontSize: 11,
+        fontWeight: "600",
+    },
+    macroValue: {
+        color: colors.text,
+        fontSize: 16,
+        fontWeight: "800",
         marginTop: 5,
     },
-    separator: {
-        color: colors.border,
+    macroGoal: {
+        color: colors.textSecondary,
+        fontSize: 10,
+        marginTop: 4,
     },
     filters: {
         backgroundColor: colors.surface,
@@ -319,8 +428,40 @@ const styles = StyleSheet.create({
         paddingHorizontal: 18,
     },
     addButtonText: {
-        color: colors.background,
+        color: colors.onPrimary,
         fontSize: 13,
         fontWeight: "800",
     },
-});
+    footer: {
+        marginTop: 24,
+    },
+    facebookButton: {
+        alignItems: "center",
+        backgroundColor: colors.surface,
+        borderColor: colors.border,
+        borderRadius: 13,
+        borderWidth: 1,
+        flexDirection: "row",
+        gap: 10,
+        justifyContent: "center",
+        minHeight: 48,
+        paddingHorizontal: 14,
+    },
+    facebookButtonPressed: {
+        backgroundColor: colors.surfaceRaised,
+    },
+    facebookButtonText: {
+        color: colors.primary,
+        flex: 0,
+        fontSize: 13,
+        fontWeight: "700",
+    },
+    facebookError: {
+        color: colors.danger,
+        fontSize: 12,
+        lineHeight: 18,
+        marginTop: 9,
+        textAlign: "center",
+    },
+    });
+}

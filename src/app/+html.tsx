@@ -10,6 +10,7 @@ export default function RootHtml({ children }: PropsWithChildren) {
                 <meta charSet="utf-8" />
                 <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
                 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+                <title>Ritmo — nutrição e bem-estar</title>
                 <ScrollViewStyleReset />
                 <style
                     dangerouslySetInnerHTML={{
@@ -21,7 +22,7 @@ export default function RootHtml({ children }: PropsWithChildren) {
                                 z-index: 2147483647;
                                 display: grid;
                                 place-items: center;
-                                background: #f4f8f4;
+                                background: #f4f7f2;
                                 opacity: 1;
                                 visibility: visible;
                                 transition: opacity 260ms ease, visibility 260ms ease;
@@ -41,13 +42,13 @@ export default function RootHtml({ children }: PropsWithChildren) {
                             .siga-startup-mark { width: 112px; height: 112px; }
                             .siga-startup-name {
                                 margin-top: 24px;
-                                color: #173b2a;
+                                color: #1b2a21;
                                 font: 800 22px/1.2 system-ui, sans-serif;
                                 letter-spacing: 2.4px;
                             }
                             .siga-startup-tagline {
                                 margin-top: 9px;
-                                color: #64796b;
+                                color: #68776d;
                                 font: 600 11px/1.4 system-ui, sans-serif;
                                 letter-spacing: 1.8px;
                             }
@@ -55,8 +56,8 @@ export default function RootHtml({ children }: PropsWithChildren) {
                                 width: 24px;
                                 height: 24px;
                                 margin-top: 32px;
-                                border: 3px solid #dcebe1;
-                                border-top-color: #176b49;
+                                border: 3px solid #dce6db;
+                                border-top-color: #236548;
                                 border-radius: 50%;
                                 animation: siga-startup-spin 850ms linear infinite;
                             }
@@ -64,21 +65,27 @@ export default function RootHtml({ children }: PropsWithChildren) {
                             @media (prefers-reduced-motion: reduce) {
                                 .siga-startup-spinner { animation: none; }
                             }
+                            @media (prefers-color-scheme: dark) {
+                                #siga-startup-screen { background: #111a15; }
+                                .siga-startup-name { color: #eef5ef; }
+                                .siga-startup-tagline { color: #adbbb0; }
+                                .siga-startup-spinner { border-color: #35483b; border-top-color: #80d2a2; }
+                            }
                         `,
                     }}
                 />
                 {headNodes}
             </head>
             <body {...bodyAttributes}>
-                <div id="siga-startup-screen" role="status" aria-label="A abrir o SIGA ALLANA">
+                <div id="siga-startup-screen" role="status" aria-label="A abrir o Ritmo">
                     <div className="siga-startup-content">
                         <svg
                             className="siga-startup-mark"
                             viewBox="0 0 128 128"
                             role="img"
-                            aria-label="Símbolo SIGA ALLANA"
+                            aria-label="Símbolo Ritmo"
                         >
-                            <circle cx="64" cy="64" r="61" fill="#176b49" />
+                            <circle cx="64" cy="64" r="61" fill="#236548" />
                             <circle cx="64" cy="64" r="49" fill="none" stroke="#ffffff" strokeWidth="5" />
                             <path
                                 d="M64 57c-17-2-26-12-26-28 15 0 25 7 26 23 3-16 13-25 28-25-1 15-10 27-28 31"
@@ -86,9 +93,9 @@ export default function RootHtml({ children }: PropsWithChildren) {
                             />
                             <path d="M64 55v31" fill="none" stroke="#ffffff" strokeWidth="4" strokeLinecap="round" />
                             <path d="M40 83h48c-3 15-12 23-24 23S43 98 40 83Z" fill="#ffffff" />
-                            <path d="M46 89h36" fill="none" stroke="#10583b" strokeWidth="3" />
+                            <path d="M46 89h36" fill="none" stroke="#1c513a" strokeWidth="3" />
                         </svg>
-                        <div className="siga-startup-name">SIGA ALLANA</div>
+                        <div className="siga-startup-name">RITMO</div>
                         <div className="siga-startup-tagline">NUTRIÇÃO · BEM-ESTAR</div>
                         <div className="siga-startup-spinner" />
                     </div>
