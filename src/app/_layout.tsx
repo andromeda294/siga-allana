@@ -1,4 +1,5 @@
 import { Stack } from "expo-router";
+import AdsProvider from "@/contexts/AdsProvider";
 import { MealsProvider } from "@/contexts/MealsContext";
 import { AppSettingsProvider, useAppSettings } from "@/contexts/AppSettingsContext";
 import { StatusBar } from "expo-status-bar";
@@ -38,10 +39,12 @@ export default function RootLayout() {
   }, []);
 
   return (
-    <AppSettingsProvider>
-      <MealsProvider>
-        <AppNavigator />
-      </MealsProvider>
-    </AppSettingsProvider>
+    <AdsProvider>
+      <AppSettingsProvider>
+        <MealsProvider>
+          <AppNavigator />
+        </MealsProvider>
+      </AppSettingsProvider>
+    </AdsProvider>
   );
 }

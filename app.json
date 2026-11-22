@@ -2,7 +2,7 @@
   "expo": {
     "name": "Ritmo",
     "slug": "siga-allana",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "sigaallana",
@@ -43,6 +43,24 @@
             "image": "./assets/images/icon.png"
           }
         }
+      ],
+      "expo-web-browser",
+      [
+        "react-native-google-mobile-ads/app.plugin.js",
+        {
+          "androidAppId": "ca-app-pub-1347711363031200~1157087730",
+          "delayAppMeasurementInit": true
+        }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "buildArchs": {
+            "reactNativeArchitectures": ["arm64-v8a"],
+            "enableMinifyInReleaseBuilds": true,
+            "enableShrinkResourcesInReleaseBuilds": true
+          }
+        }
       ]
     ],
     "experiments": {
@@ -59,6 +77,12 @@
         "projectId": "3655f793-9fc4-449f-924b-e3da871d3616"
       }
     },
-    "owner": "jeronimo_costa"
+    "owner": "jeronimo_costa",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/3655f793-9fc4-449f-924b-e3da871d3616"
+    }
   }
 }

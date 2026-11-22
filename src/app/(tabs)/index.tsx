@@ -38,7 +38,7 @@ export default function HomeScreen() {
                         <Text style={styles.editGoals}>{isEditingGoals ? "Fechar" : "Editar metas"}</Text>
                     </Pressable>
                 </View>
-                <Text style={styles.goalHint}>Acompanha o teu progresso diário.</Text>
+                <Text style={styles.goalHint}>Acompanha o teu progresso diário com RITMO.</Text>
                 {isEditingGoals ? (
                     <GoalsEditor
                         visible={isEditingGoals}

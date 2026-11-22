@@ -3,6 +3,7 @@ import StorageNotice from "@/components/StorageNotice";
 import { useMeals } from "@/contexts/MealsContext";
 import type { MealInput } from "@/contexts/MealsContext";
 import { useAppSettings } from "@/contexts/AppSettingsContext";
+import { useAds } from "@/contexts/AdsContext";
 import { useThemeStyles } from "@/styles/useThemeStyles";
 import { Ionicons } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
@@ -48,6 +49,7 @@ function parseAmount(value: string) {
 }
 
 export default function AddMealScreen() {
+    const { showInterstitial } = useAds();
     const { colors, globalStyles, settingsError } = useAppSettings();
     const styles = useThemeStyles(createStyles);
     const {
@@ -127,6 +129,7 @@ export default function AddMealScreen() {
             addMeal(meal);
             setForm(initialForm);
             setSuccess("Refeição adicionada.");
+            showInterstitial();
         }
     }
 

@@ -1,6 +1,7 @@
 import StorageNotice from "@/components/StorageNotice";
 import ScreenLoader from "@/components/ScreenLoader";
 import { useAppSettings } from "@/contexts/AppSettingsContext";
+import { useAds } from "@/contexts/AdsContext";
 import type {
     ReminderPreferences,
     UserProfile,
@@ -62,6 +63,7 @@ function isMealTime(value: string) {
 }
 
 export default function ProfileScreen() {
+    const { showInterstitial } = useAds();
     const {
         colors,
         globalStyles,
@@ -202,6 +204,7 @@ export default function ProfileScreen() {
                 ...reminderDraft,
                 mealTimes: [...new Set(mealTimes)].sort(),
             });
+            showInterstitial();
             setReminderMessage(
                 reminderDraft.waterEnabled || reminderDraft.mealEnabled
                     ? "Lembretes atualizados."
